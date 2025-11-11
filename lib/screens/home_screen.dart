@@ -66,12 +66,12 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Upcoming Flights",
+                "Available Buses",
                 style: Styles.headLineStyle2,
               ),
               InkWell(
                 onTap: () {
-                  print("You are tapped");
+                  print("View all buses");
                 },
                 child: Text(
                   "View all",
@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               children: const [
                 TicketView(),
-                TicketView(), // Add another TicketView for demonstration
+                TicketView(),
               ],
             ),
           ),
@@ -96,12 +96,12 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Hotels",
+                "Events Near You",
                 style: Styles.headLineStyle2,
               ),
               InkWell(
                 onTap: () {
-                  print("You are tapped");
+                  print("View all events");
                 },
                 child: Text(
                   "View all",
