@@ -70,4 +70,59 @@ class AuthService {
       return null;
     }
   }
+
+  // Check if user is admin
+  Future<bool> isUserAdmin() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) return false;
+
+      final response = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .single();
+      return response['role'] == 'admin';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Get user role
+  Future<String> getUserRole() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) return 'user';
+
+      final response = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .single();
+      return response['role'] ?? 'user';
+    } catch (e) {
+      return 'user';
+    }
+  }
+
+  // Stream to check if current user is admin
+  Stream<bool> isCurrentUserAdmin() async* {
+    final user = currentUser;
+    if (user == null) {
+      yield false;
+      return;
+    }
+
+    // Initial check
+    yield await isUserAdmin();
+
+    // Listen to auth state changes
+    await for (final state in authStateChanges) {
+      if (state.session?.user != null) {
+        yield await isUserAdmin();
+      } else {
+        yield false;
+      }
+    }
+  }
 }

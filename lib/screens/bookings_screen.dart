@@ -4,14 +4,14 @@ import 'package:ticketbooking/services/booking_service.dart';
 import 'package:ticketbooking/utils/app_styles.dart';
 import 'package:gap/gap.dart';
 
-class TicketScreen extends StatefulWidget {
-  const TicketScreen({super.key});
+class MyBookingsScreen extends StatefulWidget {
+  const MyBookingsScreen({Key? key}) : super(key: key);
 
   @override
-  State<TicketScreen> createState() => _TicketScreenState();
+  State<MyBookingsScreen> createState() => _MyBookingsScreenState();
 }
 
-class _TicketScreenState extends State<TicketScreen> {
+class _MyBookingsScreenState extends State<MyBookingsScreen> {
   final BookingService _bookingService = BookingService();
   late Future<List<Booking>> _bookingsFuture;
 
@@ -70,6 +70,10 @@ class _TicketScreenState extends State<TicketScreen> {
         title: Text(
           'My Bookings',
           style: Styles.headLineStyle2,
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF3b3b3b)),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: FutureBuilder<List<Booking>>(

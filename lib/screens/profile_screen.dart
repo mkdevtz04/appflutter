@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ticketbooking/services/auth_service.dart';
+import 'package:ticketbooking/services/admin_service.dart';
 import 'package:ticketbooking/utils/app_styles.dart';
 import 'package:gap/gap.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ticketbooking/screens/add_bus_screen.dart';
+import 'package:ticketbooking/screens/add_event_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,7 +16,20 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _authService = AuthService();
+  final _adminService = AdminService();
   bool _isLoading = false;
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAdminStatus();
+  }
+
+  Future<void> _checkAdminStatus() async {
+    final isAdmin = await _adminService.isUserAdmin();
+    setState(() => _isAdmin = isAdmin);
+  }
 
   Future<void> _logout() async {
     setState(() {
@@ -89,14 +105,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       "User ID",
                       style: Styles.headLineStyle4,
                     ),
-                    const Gap(8),
-                    Text(
-                      user?.id ?? 'No user ID',
-                      style: Styles.headLineStyle3.copyWith(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
                     const Gap(20),
                     Text(
                       "Joined",
@@ -117,6 +125,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Styles.headLineStyle2,
               ),
               const Gap(20),
+              // Admin Section (only visible to admins)
+              if (_isAdmin) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Styles.primaryColor.withOpacity(0.1),
+                    border: Border.all(color: Styles.primaryColor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Admin Panel",
+                        style: Styles.headLineStyle3.copyWith(color: Styles.primaryColor),
+                      ),
+                      const Gap(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const AddBusScreen()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Styles.primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Add Bus",
+                                  style: Styles.headLineStyle4.copyWith(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Gap(10),
+                          Expanded(
+                            child: SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const AddEventScreen()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Styles.primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Add Event",
+                                  style: Styles.headLineStyle4.copyWith(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(20),
+              ],
               // Edit Profile Button
               SizedBox(
                 width: double.infinity,

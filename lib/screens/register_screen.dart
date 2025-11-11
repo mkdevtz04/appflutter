@@ -4,12 +4,7 @@ import 'package:ticketbooking/utils/app_styles.dart';
 import 'package:gap/gap.dart';
 
 class RegisterScreen extends StatefulWidget {
-  final VoidCallback onSwitchToLogin;
-  
-  const RegisterScreen({
-    Key? key,
-    required this.onSwitchToLogin,
-  }) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -57,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration successful! Please login.')),
         );
-        widget.onSwitchToLogin();
+        Navigator.pop(context);
       }
     } catch (e) {
       setState(() {
@@ -221,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: Styles.headLineStyle4,
                   ),
                   GestureDetector(
-                    onTap: widget.onSwitchToLogin,
+                    onTap: () => Navigator.pop(context),
                     child: Text(
                       "Login",
                       style: Styles.headLineStyle4.copyWith(
