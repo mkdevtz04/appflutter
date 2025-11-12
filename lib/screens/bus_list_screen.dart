@@ -158,7 +158,9 @@ class _BusDetailScreenState extends State<BusDetailScreen> {
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(widget.bus.image.isNotEmpty ? widget.bus.image : 'assets/images/im2.jpg'),
+                    image: widget.bus.image.isNotEmpty
+                        ? NetworkImage(widget.bus.image)
+                        : const AssetImage('assets/images/im2.jpg'),
                   ),
                 ),
               ),

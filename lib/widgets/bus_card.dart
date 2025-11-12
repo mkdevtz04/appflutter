@@ -41,7 +41,9 @@ class BusCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(bus.image.isNotEmpty ? bus.image : 'assets/images/im2.jpg'),
+                  image: bus.image.isNotEmpty
+                      ? NetworkImage(bus.image)  // Load from Supabase URL
+                      : const AssetImage('assets/images/im2.jpg'),  // Local fallback
                 ),
               ),
             ),

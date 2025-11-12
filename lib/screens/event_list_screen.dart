@@ -182,7 +182,9 @@ class EventCard extends StatelessWidget {
                 ),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(event.image.isNotEmpty ? event.image : 'assets/images/im3.jpg'),
+                  image: event.image.isNotEmpty
+                      ? NetworkImage(event.image)
+                      : const AssetImage('assets/images/im3.jpg'),
                 ),
               ),
               child: Align(
@@ -357,7 +359,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(widget.event.image.isNotEmpty ? widget.event.image : 'assets/images/im3.jpg'),
+                    image: widget.event.image.isNotEmpty
+                        ? NetworkImage(widget.event.image)
+                        : const AssetImage('assets/images/im3.jpg'),
                   ),
                 ),
               ),
